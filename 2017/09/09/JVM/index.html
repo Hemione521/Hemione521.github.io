@@ -37,7 +37,6 @@
 
 
 
-
   
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
@@ -79,11 +78,13 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Think in Java," />
+  <meta name="keywords" content="Android开发," />
 
 
 
 
+
+  <link rel="alternate" href="/rss2.xml" title="骑蜗牛看大海的博客" type="application/atom+xml" />
 
 
 
@@ -95,18 +96,24 @@
 
 
 
-<meta name="description" content="很多人都想搭建自己的博客，但是奈何技术有限，服务器部署，HTML，域名解析，等等，这一大堆东西可真有的折腾。 但是如果有这样一个机会，不需要太复杂的操作，不要服务器，不要域名，不用写html，你愿意去尝试吗？ 可以先看一下我自己的http://wapchief.com背景图有点大，3M多，可能加载比较慢，但是一进去能看到默认的有个背景，然后是默认背景慢慢被覆盖的情况。">
-<meta name="keywords" content="Think in Java">
+<meta name="description" content="在Android开发中，ListView、RecyclerView和GridView控件是实现列表布局的不可或缺的工具，我觉得暂且可以这么说。比如QQ好友列表等，我们不可能用循环的方式去实现，这样对应用的性能也是有很大影响的。所以，为了记录之前遇到的这个问题，也顺便给其他需要解决这个问题的童鞋看一下，写了这篇文章（大神勿喷）！  当然，如果你的布局比较简单，你说我没必要复用，那么你看到这里可以r">
+<meta name="keywords" content="Android开发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM">
+<meta property="og:title" content="Android完美解决ListView复用导致的Checkbox状态混乱问题">
 <meta property="og:url" content="wenzhao0416.github.io/2017/09/09/JVM/index.html">
 <meta property="og:site_name" content="骑蜗牛看大海的博客">
-<meta property="og:description" content="很多人都想搭建自己的博客，但是奈何技术有限，服务器部署，HTML，域名解析，等等，这一大堆东西可真有的折腾。 但是如果有这样一个机会，不需要太复杂的操作，不要服务器，不要域名，不用写html，你愿意去尝试吗？ 可以先看一下我自己的http://wapchief.com背景图有点大，3M多，可能加载比较慢，但是一进去能看到默认的有个背景，然后是默认背景慢慢被覆盖的情况。">
+<meta property="og:description" content="在Android开发中，ListView、RecyclerView和GridView控件是实现列表布局的不可或缺的工具，我觉得暂且可以这么说。比如QQ好友列表等，我们不可能用循环的方式去实现，这样对应用的性能也是有很大影响的。所以，为了记录之前遇到的这个问题，也顺便给其他需要解决这个问题的童鞋看一下，写了这篇文章（大神勿喷）！  当然，如果你的布局比较简单，你说我没必要复用，那么你看到这里可以r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-09T12:00:04.161Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2508513-d98488e89fb876f6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2508513-83067cdb2d083135.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2508513-c7c4cc9e8f204b17.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2508513-15d10ce5a7a02de2.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2508513-4ded940dd9ccf828.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-09-10T08:37:03.621Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM">
-<meta name="twitter:description" content="很多人都想搭建自己的博客，但是奈何技术有限，服务器部署，HTML，域名解析，等等，这一大堆东西可真有的折腾。 但是如果有这样一个机会，不需要太复杂的操作，不要服务器，不要域名，不用写html，你愿意去尝试吗？ 可以先看一下我自己的http://wapchief.com背景图有点大，3M多，可能加载比较慢，但是一进去能看到默认的有个背景，然后是默认背景慢慢被覆盖的情况。">
+<meta name="twitter:title" content="Android完美解决ListView复用导致的Checkbox状态混乱问题">
+<meta name="twitter:description" content="在Android开发中，ListView、RecyclerView和GridView控件是实现列表布局的不可或缺的工具，我觉得暂且可以这么说。比如QQ好友列表等，我们不可能用循环的方式去实现，这样对应用的性能也是有很大影响的。所以，为了记录之前遇到的这个问题，也顺便给其他需要解决这个问题的童鞋看一下，写了这篇文章（大神勿喷）！  当然，如果你的布局比较简单，你说我没必要复用，那么你看到这里可以r">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2508513-d98488e89fb876f6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -115,11 +122,10 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '5.1.2',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    motion: true,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -142,8 +148,14 @@
 
 
 
-  <title>JVM | 骑蜗牛看大海的博客</title>
+  <title>Android完美解决ListView复用导致的Checkbox状态混乱问题 | 骑蜗牛看大海的博客</title>
   
+
+
+
+
+
+
 
 
 
@@ -161,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -200,27 +212,17 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+          <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
@@ -228,9 +230,9 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
@@ -238,9 +240,9 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
+          <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
@@ -248,9 +250,43 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -296,7 +332,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JVM</h1>
+          <h1 class="post-title" itemprop="name headline">Android完美解决ListView复用导致的Checkbox状态混乱问题</h1>
         
 
         <div class="post-meta">
@@ -331,8 +367,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -352,6 +388,27 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  836
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
 
@@ -368,12 +425,48 @@
       
 
       
-        <p>很多人都想搭建自己的博客，但是奈何技术有限，服务器部署，HTML，域名解析，等等，这一大堆东西可真有的折腾。</p>
-<p>但是如果有这样一个机会，不需要太复杂的操作，不要服务器，不要域名，不用写html，你愿意去尝试吗？</p>
-<p>可以先看一下我自己的<a href="http://wapchief.com/" target="_blank" rel="external">http://wapchief.com</a><br>背景图有点大，3M多，可能加载比较慢，但是一进去能看到默认的有个背景，然后是默认背景慢慢被覆盖的情况。 </p>
-<a id="more"></a>
-<p>当时也是费了半天功夫才搭建好，在这篇文章中会详细介绍整个流程，尽量避免入坑吧，但要是真是你自己给自己挖坑那就没办法了。</p>
-<p>搭建的时候也是看着别人的教程一点点跟进，但是都有缺陷。<br>比如分支的创建，和私人域名的解析，有这方面的教程但是都不是太完善，有些只是教你搭建但是后期没有考虑换电脑，换环境的情况。包括后期维护等等。</p>
+        <blockquote>
+<p>在Android开发中，ListView、RecyclerView和GridView控件是实现列表布局的不可或缺的工具，我觉得暂且可以这么说。比如QQ好友列表等，我们不可能用循环的方式去实现，这样对应用的性能也是有很大影响的。所以，为了记录之前遇到的这个问题，也顺便给其他需要解决这个问题的童鞋看一下，写了这篇文章（大神勿喷）！</p>
+</blockquote>
+<p>当然，如果你的布局比较简单，你说我没必要复用，那么你看到这里可以return了….</p>
+<div align="center"><img src="http://upload-images.jianshu.io/upload_images/2508513-d98488e89fb876f6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="傲娇.jpg"></div>
+
+<p>如果想用但是不知道怎么用的呢(基本不存在吧)，可以参考下之前刚接触Android时写的一篇博客——<a href="http://blog.csdn.net/lr809174917/article/details/50949392" target="_blank" rel="external">Android ListView的复用优化</a></p>
+<p>那么言归正传，如果你搜到这篇文章，那么你遇到的问题应该是下面这样的：</p>
+<div align="center"><img src="http://upload-images.jianshu.io/upload_images/2508513-83067cdb2d083135.gif?imageMogr2/auto-orient/strip" alt="error.gif"></div>
+
+<p>我们实现CheckBox的选中效果一般有两种：</p>
+<ul>
+<li><p>设置CheckBox的 setOnClickListener() 监听</p>
+</li>
+<li><p>设置CheckBox的 setOnCheckedChangeListener() 监听</p>
+<p>下面针对这两种实现，提出两种解决方案：</p>
+<h5 id="1-通过setOnClickListener-监听实现"><a href="#1-通过setOnClickListener-监听实现" class="headerlink" title="1. 通过setOnClickListener()监听实现"></a>1. 通过setOnClickListener()监听实现</h5><p>传递给适配器的数据的实体类中添加一个是否选中的自选，比如我demo中这个，除了文本信息和图片信息外，我增加一个hasChecked属性来标记该item是否被选中，实体类信息如下：</p>
+<p>​</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> String description; <span class="comment">//文字描述</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> resId; <span class="comment">//图片id</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> hasChecked; <span class="comment">//是否选中</span></div></pre></td></tr></table></figure>
+<p>然后我们在Listview的Adapter适配器中去实现监听效果：</p>
+<p>​</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">mCheckBox.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">                <span class="comment">// checkbox控件的方法，判断控件是否选中</span></div><div class="line">                <span class="keyword">if</span>(mCheckBox.isChecked())&#123;</div><div class="line">                    <span class="comment">//自己在实体类中实现的方法 对属性就行赋值 标记是否选中</span></div><div class="line">                    mData.get(position).setHasChecked(<span class="keyword">true</span>);</div><div class="line">                    <span class="comment">//计数 为了便于观察 与此问题解决无关</span></div><div class="line">                    selectCount++;</div><div class="line">                &#125;<span class="keyword">else</span> &#123;</div><div class="line">                    mData.get(position).setHasChecked(<span class="keyword">true</span>);</div><div class="line">                    selectCount--;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+<p>​</p>
+<p>看到这里，你估计要说，我也是这么写的啊，为什么我的不行呢？莫慌，仔细考虑一下，之所以发生混乱是因为没有对每个item的Checkbox赋初始值，导致布局控件复用的时候，还是会使用复用到的控件的值。<br>所以，我们只需要在设置setOnClickListener() 监听之前，为item的checkbox赋一个初始值即可解决该问题。</p>
+<p>​</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mCheckBox.setChecked(mData.get(position).isHasChecked());</div></pre></td></tr></table></figure>
+<p>​</p>
+<h5 id="2-通过setOnCheckedChangeListener-监听实现"><a href="#2-通过setOnCheckedChangeListener-监听实现" class="headerlink" title="2. 通过setOnCheckedChangeListener()监听实现"></a>2. 通过setOnCheckedChangeListener()监听实现</h5><p>使用该方法实现和通过方法1实现有一个共同点就是都需要给item赋一个初始值，但是不一样的地方是，如果你debug代码你可以发现，滚动的时候，你不需要点击checkbox它就会自动调用onCheckChanged()方法，然后去执行里面的逻辑，问题依旧没有解决！</p>
+<div align="center"><img src="http://upload-images.jianshu.io/upload_images/2508513-c7c4cc9e8f204b17.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="那你在这里说个毛线噻.jpg"></div>
+
+<p>这时候，我们只需要在设置初始值之前给checkbox取消setOnCheckedChangeListener()监听就可以解决这个问题！</p>
+<p>​</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">mCheckBox.setOnCheckedChangeListener(null);</div><div class="line">mCheckBox.setChecked(mData.get(position).isHasChecked());</div><div class="line">mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) &#123;</div><div class="line">                if(isChecked)&#123;</div><div class="line">                    mData.get(position).setHasChecked(true);</div><div class="line">                    selectCount++;</div><div class="line">                &#125;else &#123;</div><div class="line">                    mData.get(position).setHasChecked(false);</div><div class="line">                    selectCount--;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+<p>然后可以看一下效果就是这样式滴：</p>
+<div align="center"><img src="http://upload-images.jianshu.io/upload_images/2508513-15d10ce5a7a02de2.gif?imageMogr2/auto-orient/strip" alt="normal.gif"></div>
+
+<p>好了，到这里两种方法就讲完了，聪明的你是不是觉得炒鸡简单呢？<br>如果对你有用的话，可以点个喜欢哦，谢谢（手动比心）</p>
+<div align="center"><img src="http://upload-images.jianshu.io/upload_images/2508513-4ded940dd9ccf828.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="QQ图片20170813200511.jpg"></div>
+
+<p>如果你有其他的方法欢迎同我这只菜鸟交流哦！</p>
+</li>
+</ul>
 
       
     </div>
@@ -386,22 +479,21 @@
     
 
     
-
     <div>
-    
+  
     <div>
     
         <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
     
 </div>
-    
-    </div>
+  
+  </div>
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Think-in-Java/" rel="tag"><i class="fa fa-tag"></i> Think in Java</a>
+            <a href="/tags/Android开发/" rel="tag"><i class="fa fa-tag"></i> Android开发</a>
           
         </div>
       
@@ -458,25 +550,31 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Wen Zhao" />
+          <p class="site-author-name" itemprop="name">Wen Zhao</p>
+           
+              <p class="site-description motion-element" itemprop="description">如果梦想能实现，那么三年算什么？</p>
           
-            <img class="site-author-image" itemprop="image"
-              src="/uploads/avatar.jpg"
-              alt="Wen Zhao" />
-          
-            <p class="site-author-name" itemprop="name">Wen Zhao</p>
-            <p class="site-description motion-element" itemprop="description"></p>
         </div>
-
         <nav class="site-state motion-element">
 
           
             <div class="site-state-item site-state-posts">
-            
-              <a href="/archives">
-            
+              <a href="/archives/">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -508,6 +606,13 @@
         </nav>
 
         
+          <div class="feed-link motion-element">
+            <a href="/rss2.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
 
         <div class="links-of-author motion-element">
           
@@ -515,19 +620,34 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/wenzhao0416" target="_blank" title="Github">
                   
-                    <i class="fa fa-fw fa-globe"></i>Github</a>
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      Github
+                    
+                </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://www.jianshu.com/u/b849dc385b30" target="_blank" title="简书">
                   
-                    <i class="fa fa-fw fa-globe"></i>简书</a>
+                    <i class="fa fa-fw fa-heartbeat"></i>
+                  
+                    
+                      简书
+                    
+                </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://blog.csdn.net/lr809174917" target="_blank" title="csdn">
                   
-                    <i class="fa fa-fw fa-globe"></i>csdn</a>
+                    <i class="fa fa-fw fa-crosshairs"></i>
+                  
+                    
+                      csdn
+                    
+                </a>
               </span>
             
           
@@ -541,16 +661,16 @@
           <div class="links-of-blogroll motion-element links-of-blogroll-inline">
             <div class="links-of-blogroll-title">
               <i class="fa  fa-fw fa-globe"></i>
-              Links
+              推荐阅读
             </div>
             <ul class="links-of-blogroll-list">
               
                 <li class="links-of-blogroll-item">
-                  <a href="http://wenzhao0416.github.io/" title="MacTalk" target="_blank">MacTalk</a>
+                  <a href="http://macshuo.com/" title="MacTalk" target="_blank">MacTalk</a>
                 </li>
               
                 <li class="links-of-blogroll-item">
-                  <a href="http://wenzhao0416.github.io/" title="Title" target="_blank">Title</a>
+                  <a href="http://example.com/" title="Title" target="_blank">Title</a>
                 </li>
               
             </ul>
@@ -562,6 +682,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-通过setOnClickListener-监听实现"><span class="nav-number">1.</span> <span class="nav-text">1. 通过setOnClickListener()监听实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-通过setOnCheckedChangeListener-监听实现"><span class="nav-number">2.</span> <span class="nav-text">2. 通过setOnCheckedChangeListener()监听实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -585,30 +721,32 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Wen Zhao</span>
-
-  
 </div>
+
 <div class="powered-by">
-<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+<i class="fa fa-user-md"></i>
+<span id="busuanzi_container_site_uv">
   本站访客数:<span id="busuanzi_value_site_uv"></span>
 </span>
 </div>
-<span class="post-meta-divider">|</span>
-
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-  <span class="post-meta-divider">|</span>
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
 
 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共836字</span>
+</div>
         
-
-
-
-
-
-
 
         
       </div>
@@ -688,10 +826,6 @@
   
   
 
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
-
-
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
@@ -732,9 +866,324 @@
 
 
 
-
-
   
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
 
