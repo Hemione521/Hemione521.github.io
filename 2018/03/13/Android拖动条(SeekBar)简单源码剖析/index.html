@@ -96,20 +96,21 @@
 
 
 
-<meta name="description" content="在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖动视频进度条、音频进度条等。不管大家用的多还是少，由于工作原因，个人用到的还是比较少的。然后最近在看书的时候，书中为了直观的展示颜色矩阵(ColorMatrix)的变换，有一段代码是通过SeekBar拖动来实时修改图像。   demo的样式就是下图展示的这样：   然后这段代码也很简单，  实现一个OnSeekBar">
+<meta name="description" content="写在开始之前 在Android的色彩处理中，我们通常用三个角度来描述一个图像：  色调： 图像的颜色  饱和度：颜色的纯度，从0(灰)到100%(饱和)来进行描述  亮度：颜色的相对明暗程度   在上面三个属性中，饱和度和亮度为0会使得图片看起来是纯黑色。(记住这一点) 本篇源码分析的原因就是来自这个问题。    正文 在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖">
 <meta name="keywords" content="Android源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android拖动条(SeekBar)简单源码剖析">
 <meta property="og:url" content="wenzhao0416.github.io/2018/03/13/Android拖动条(SeekBar)简单源码剖析/index.html">
 <meta property="og:site_name" content="骑蜗牛看大海的博客">
-<meta property="og:description" content="在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖动视频进度条、音频进度条等。不管大家用的多还是少，由于工作原因，个人用到的还是比较少的。然后最近在看书的时候，书中为了直观的展示颜色矩阵(ColorMatrix)的变换，有一段代码是通过SeekBar拖动来实时修改图像。   demo的样式就是下图展示的这样：   然后这段代码也很简单，  实现一个OnSeekBar">
+<meta property="og:description" content="写在开始之前 在Android的色彩处理中，我们通常用三个角度来描述一个图像：  色调： 图像的颜色  饱和度：颜色的纯度，从0(灰)到100%(饱和)来进行描述  亮度：颜色的相对明暗程度   在上面三个属性中，饱和度和亮度为0会使得图片看起来是纯黑色。(记住这一点) 本篇源码分析的原因就是来自这个问题。    正文 在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2508513-3ca3d8003d09743e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2508513-4e16fd7366b33a01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2508513-db02c2ce26ba436c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-03-13T14:34:51.210Z">
+<meta property="og:updated_time" content="2018-03-14T11:57:52.450Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android拖动条(SeekBar)简单源码剖析">
-<meta name="twitter:description" content="在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖动视频进度条、音频进度条等。不管大家用的多还是少，由于工作原因，个人用到的还是比较少的。然后最近在看书的时候，书中为了直观的展示颜色矩阵(ColorMatrix)的变换，有一段代码是通过SeekBar拖动来实时修改图像。   demo的样式就是下图展示的这样：   然后这段代码也很简单，  实现一个OnSeekBar">
+<meta name="twitter:description" content="写在开始之前 在Android的色彩处理中，我们通常用三个角度来描述一个图像：  色调： 图像的颜色  饱和度：颜色的纯度，从0(灰)到100%(饱和)来进行描述  亮度：颜色的相对明暗程度   在上面三个属性中，饱和度和亮度为0会使得图片看起来是纯黑色。(记住这一点) 本篇源码分析的原因就是来自这个问题。    正文 在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2508513-3ca3d8003d09743e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -397,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,496字
+                  1,727字
                 </span>
               
 
@@ -434,10 +435,23 @@
       
 
       
-        <blockquote>
-<p> 在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖动视频进度条、音频进度条等。不管大家用的多还是少，由于工作原因，个人用到的还是比较少的。然后最近在看书的时候，书中为了直观的展示颜色矩阵(ColorMatrix)的变换，有一段代码是通过SeekBar拖动来实时修改图像。</p>
+        <h3 id="写在开始之前"><a href="#写在开始之前" class="headerlink" title="写在开始之前"></a><center><font color="grey"><strong>写在开始之前</strong></font></center></h3><blockquote>
+<p>在Android的色彩处理中，我们通常用三个角度来描述一个图像：</p>
+<ul>
+<li><p>色调： 图像的颜色</p>
+</li>
+<li><p>饱和度：颜色的纯度，从0(灰)到100%(饱和)来进行描述</p>
+</li>
+<li><p>亮度：颜色的相对明暗程度  </p>
+<p>在上面三个属性中，饱和度和亮度为0会使得图片看起来是纯黑色。(记住这一点)</p>
+<p>本篇源码分析的原因就是来自这个问题。</p>
+</li>
+</ul>
 </blockquote>
-<p> demo的样式就是下图展示的这样：</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a><center><font color="grey">正文</font></center></h3><blockquote>
+<p>在Android开发的过程中，大家有可能都使用过SeekBar这个控件，比如拖动视频进度条、音频进度条等。不管大家用的多还是少，由于工作原因，个人用到的还是比较少的。然后最近在看书的时候，书中为了直观的展示颜色矩阵(ColorMatrix)的变换，有一段代码是通过SeekBar拖动来实时修改图像。</p>
+</blockquote>
+<p>demo的样式就是下图展示的这样：</p>
 <div align="center"><br><br><img src="https://upload-images.jianshu.io/upload_images/2508513-3ca3d8003d09743e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="b90d4ee5-5a66-49be-a343-19a3bbf8db62.png"><br><br></div>
 
 <p>然后这段代码也很简单，</p>
@@ -447,11 +461,17 @@
 <li>重写<code>onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)</code>方法即可。<br>事实上，我们实际开发过程中也是这样处理的。<br>  那么看下面代码：</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> mHue, mSaturation, mLum;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    setContentView(R.layout.app_activity_layout_color_matrix);</div><div class="line">    ...</div><div class="line">    <span class="comment">//省略初始化控件代码</span></div><div class="line">    ...</div><div class="line">    initSeekBarProperty();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 初始化进度条属性</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initSeekBarProperty</span><span class="params">()</span> </span>&#123;</div><div class="line">    mSeekbarHue.setProgress(MID_VALUE);</div><div class="line">    mSeekbarSaturation.setProgress(MID_VALUE);</div><div class="line">    mSeekbarScale.setProgress(MID_VALUE);</div><div class="line">    mSeekbarHue.setOnSeekBarChangeListener(<span class="keyword">this</span>);</div><div class="line">    mSeekbarSaturation.setOnSeekBarChangeListener(<span class="keyword">this</span>);</div><div class="line">    mSeekbarScale.setOnSeekBarChangeListener(<span class="keyword">this</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(SeekBar seekBar, <span class="keyword">int</span> progress, <span class="keyword">boolean</span> fromUser)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (seekBar == mSeekbarHue) &#123; <span class="comment">//调整色调，色调范围在-180~180之间一个周期</span></div><div class="line">        mHue = (progress - MID_VALUE) * <span class="number">1.0f</span> / MID_VALUE * <span class="number">180</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (seekBar == mSeekbarSaturation) &#123; <span class="comment">//调整饱和度</span></div><div class="line">        mSaturation = progress * <span class="number">1.0f</span> / MID_VALUE;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (seekBar == mSeekbarScale) &#123; <span class="comment">//调整亮度</span></div><div class="line">        mLum = progress * <span class="number">1.0f</span> / MID_VALUE;</div><div class="line">    &#125;</div><div class="line">    mImageMatrix.setImageBitmap(handleImageMatrix(bitmap, mHue, mSaturation, mLum));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在<code>initSeekBarProperty()</code>方法中为Seekbar设置当前要显示的Level，并且设置进度条改变的监听。<br>然后运行Demo,只拖动控制色调的Seekbar，发现此时图片变成了黑色。从网上搜索答案，解决方案是：</p>
+<p>在<code>initSeekBarProperty()</code>方法中为Seekbar设置当前要显示的进度，并且设置进度条改变的监听。<br>然后运行Demo,只拖动控制色调的Seekbar，是不是以为大功告成了？我发现此时图片变成了黑色。</p>
+<p>想到我们在上面的拓展，当饱和度和亮度为0时，图片是会变成黑色背景。那么我们调试一下代码，来验证下是不是这样，调试代码如图：</p>
+<div align="center"><img src="https://upload-images.jianshu.io/upload_images/2508513-4e16fd7366b33a01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></div>
+
+<p>调试验证了我们的猜想。</p>
+<p>从网上搜索答案，解决方案是：</p>
 <blockquote>
 <p>将<code>setOnSeekBarChangeListener()</code>监听放在<code>setProgress()</code>之前</p>
 </blockquote>
-<p>那么真正的原因是什么呢？我们从源码的角度来简单剖析一下这个问题。<br>首先说一下Seekbar的继承关系:</p>
+<p>然后将设置监听和设置进度的顺序调换了一下，果真没有问题了。</p>
+<h3 id="源码部分"><a href="#源码部分" class="headerlink" title="源码部分"></a><center><font color="grey"><strong>源码部分</strong></font></center></h3><p>那么真正的原因是什么呢？我们从源码的角度来简单剖析一下这个问题。<br>首先说一下Seekbar的继承关系:</p>
 <div align="center"><img src="https://upload-images.jianshu.io/upload_images/2508513-db02c2ce26ba436c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1520946720232.png"></div>
 
 <p>首先看一下监听回调的方法：<br><code>void onProgressRefresh(float scale, boolean fromUser, int progress)</code><br>进入SeekBar的源码，可以看到<code>onProgressRefresh()</code>方法源码如下：</p>
@@ -476,7 +496,7 @@
 <li>当我们拖动<code>seekbar</code>时，<code>fromUser</code>传值为true；<br>那么回到我们最开始的问题，为什么需要先设置监听呢? 答案在<code>SeekBar</code>的<code>onProgressChanged()</code>方法中</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (mOnSeekBarChangeListener != <span class="keyword">null</span>) &#123;</div><div class="line">            mOnSeekBarChangeListener.onProgressChanged(<span class="keyword">this</span>, progress, fromUser);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
-<blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><center><font color="grey">总结</font></center></h3><blockquote>
 <ul>
 <li>当我们先通过<code>setProgress()</code>设置进度时，此时回调到<code>onProgressChanged()</code>方法时，由于<code>mOnSeekBarChangeListener == null</code>, 所以不会去执行我们重写的<code>onProgressChange()</code>方法,自然也就不会去改变色调、饱和度和亮度这几个的值，由于在初始化的时候，这三个值默认为0.f，然后当饱和度和亮度为0的时候，图片会变成黑色。</li>
 <li>如果我们先设置监听，再去通过<code>setProgress()</code>设置进度，此时由于<code>mOnSeekBarChangeListener ！= null</code>就可以回调到<code>onProgressChanged()</code>方法中修改三个变量的值。</li>
@@ -524,7 +544,7 @@
   <p><span>本文标题:</span><a href="/2018/03/13/Android拖动条(SeekBar)简单源码剖析/">Android拖动条(SeekBar)简单源码剖析</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Wen Zhao 的个人博客">Wen Zhao</a></p>
   <p><span>发布时间:</span>2018年03月13日 - 22:03</p>
-  <p><span>最后更新:</span>2018年03月13日 - 22:03</p>
+  <p><span>最后更新:</span>2018年03月14日 - 19:03</p>
   <p><span>原始链接:</span><a href="/2018/03/13/Android拖动条(SeekBar)简单源码剖析/" title="Android拖动条(SeekBar)简单源码剖析">wenzhao0416.github.io/2018/03/13/Android拖动条(SeekBar)简单源码剖析/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="wenzhao0416.github.io/2018/03/13/Android拖动条(SeekBar)简单源码剖析/"  aria-label="复制成功！"></i></span>
   </p>
@@ -634,8 +654,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -740,6 +769,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#写在开始之前"><span class="nav-number">1.</span> <span class="nav-text">写在开始之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码部分"><span class="nav-number">3.</span> <span class="nav-text">源码部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -785,7 +830,7 @@
 -->
 
 <div class="theme-info">
-  <span class="post-count">博客全站共2.3k字</span>
+  <span class="post-count">博客全站共2.6k字</span>
 </div>
         
 
